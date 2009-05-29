@@ -156,11 +156,14 @@ except NOT-FRAME (if passed)."
 DEFAULT is a default value for the prompt.
 
 REQUIRE-MATCH can take the same values as in `completing-read'."
-  (completing-read (concat "Perspective name"
-                           (if default (concat " (default " default ")") "")
-                           ": ")
-                   (persp-names)
-                   nil require-match nil nil default))
+  (funcall (if (functionp 'ido-completing-read)
+               'ido-completing-read
+             'completing-read)
+           (concat "Perspective name"
+                   (if default (concat " (default " default ")") "")
+                   ": ")
+           (persp-names)
+           nil require-match nil nil default))
 
 (defmacro with-perspective (name &rest body)
   "Evaluate BODY with the perspective given by NAME as the current perspective."
